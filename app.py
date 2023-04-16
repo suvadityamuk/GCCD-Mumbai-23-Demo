@@ -55,17 +55,22 @@ def health_check():
     return jsonify(result)
 
 
-@app.route("/inference", methods=["GET"])
+@app.route("/inference", methods=["GET", "POST"])
 def perform_inference():
     try:
         image = request.files["image"]
+        state = 'image received.'
         pil_img = Image.open(image.stream)
+        state = 'pil img created.'
         tensor = keras.preprocessing.image.img_to_array(pil_img)
+        state = 'tensor done'
         tensor = tf.expand_dims(tensor, axis=0)
+        state = 'expand dims done'
         result = inference(tensor)
+        state = 'inference complete'
         return jsonify(result)
     except Exception as e:
-        return jsonify({"error": str(e)})
+        return jsonify({"error": str(e), "state": state})
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
