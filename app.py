@@ -1,3 +1,4 @@
+import json
 import tensorflow as tf
 from tensorflow import keras
 from flask import Flask
@@ -56,12 +57,15 @@ def health_check():
 
 @app.route("/inference", methods=["GET"])
 def perform_inference():
-    image = request.files["image"]
-    pil_img = Image.open(image.stream)
-    tensor = keras.preprocessing.image.img_to_array(pil_img)
-    tensor = tf.expand_dims(tensor, axis=0)
-    result = inference(tensor)
-    return jsonify(result)
+    try:
+        image = request.files["image"]
+        pil_img = Image.open(image.stream)
+        tensor = keras.preprocessing.image.img_to_array(pil_img)
+        tensor = tf.expand_dims(tensor, axis=0)
+        result = inference(tensor)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({"error": str(e)})
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
