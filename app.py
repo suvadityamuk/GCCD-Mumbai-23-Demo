@@ -43,6 +43,7 @@ def inference(image: tf.Tensor):
 
 
 # Defining simple Flask app and two endpoints for it
+# One is a health-check on the root URL, while the other is the inference endpoint
 
 app = Flask(__name__)
 
