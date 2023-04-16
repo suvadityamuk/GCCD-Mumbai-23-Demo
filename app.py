@@ -54,9 +54,9 @@ def health_check():
     result = {"outcome": "endpoint working successfully"}
     return jsonify(result)
 
-state = "initial state"
 @app.route("/inference", methods=["GET", "POST"])
 def perform_inference():
+    state = "initial state"
     try:
         image = request.files["image"]
         state = 'image received.'
