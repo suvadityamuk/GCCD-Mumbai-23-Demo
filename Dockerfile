@@ -1,5 +1,7 @@
 FROM ubuntu:20.04
 
+ENV PYTHONUNBUFFERED True
+
 RUN apt-get update && apt-get install -y \
 git \
 curl \
