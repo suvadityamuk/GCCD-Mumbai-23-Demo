@@ -23,6 +23,7 @@ ENV PATH="${PATH}:/home/docker_runner/.local/bin"
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:8080", "--workers=4", "app:app"]
+# ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:8080", "--workers=4", "--timeout=0","app:app"]
+CMD exec gunicorn --bind 0.0.0.0:8080 --workers 1 --timeout 0 app:app
 
 EXPOSE 8080
